@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: redacted-advisory-pdf
-          path: release-artifacts/REPORT.pdf
+          path: release-artifacts/Rport.pdf
 
   release:
     needs: build
