@@ -1,0 +1,7 @@
+# Redacted Security Advisory: Gemini 2.5 Flash — Cloud Metadata Exposure Scenarios
+
+This repository contains a fully redacted public advisory describing model-generated scenarios that emulate Google Cloud metadata server leak patterns.
+
+The advisory removes all sensitive data, tokens, credentials, project identifiers, internal IPs, or any actionable exploit code. Only high-level analysis is included.
+
+For coordinated disclosure, requests for additional details, or verification, please contact the address listed in SECURITY.md.
