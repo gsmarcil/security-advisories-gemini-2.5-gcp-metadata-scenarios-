@@ -20,16 +20,16 @@ jobs:
       - name: Install wkhtmltopdf
         run: sudo apt-get install -y wkhtmltopdf
 
-      - name: Convert REPORTE.md to PDF
+      - name: Convert report.md to PDF
         run: |
           mkdir -p release-artifacts
-          pandoc REPORTE.md -o release-artifacts/REPORTE.pdf
+          pandoc report.md -o release-artifacts/report.pdf
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
           name: redacted-advisory-pdf
-          path: release-artifacts/REPORTE.pdf
+          path: release-artifacts/report.pdf
 
   release:
     needs: build
@@ -47,6 +47,6 @@ jobs:
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Redacted Advisory Release ${{ github.run_number }}
-          files: release-artifacts/REPORTE.pdf
+          files: release-artifacts/report.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
