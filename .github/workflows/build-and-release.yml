@@ -20,11 +20,10 @@ jobs:
       - name: Install wkhtmltopdf
         run: sudo apt-get install -y wkhtmltopdf
 
-      - name: Convert REPORT.md to PDF
+      -  name: Convert Report.md to PDF
         run: |
-          mkdir -p release-artifacts
-          pandoc REPORT.md -o release-artifacts/REPORT.pdf
-
+              mkdir -p release-artifacts
+                pandoc Report.md -o release-artifacts/Report.pdf
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
@@ -34,6 +33,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+
+
 
     steps:
       - name: Download build artifact
