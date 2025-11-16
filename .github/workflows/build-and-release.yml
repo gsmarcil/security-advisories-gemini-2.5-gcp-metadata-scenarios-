@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+   runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -21,7 +21,7 @@ jobs:
         run: sudo apt-get install -y wkhtmltopdf
 
       -  name: Convert Report.md to PDF
-        run: |
+         run: |
               mkdir -p release-artifacts
                 pandoc Report.md -o release-artifacts/Report.pdf
       - name: Upload PDF artifact
