@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -20,21 +20,20 @@ jobs:
       - name: Install wkhtmltopdf
         run: sudo apt-get install -y wkhtmltopdf
 
-      -  name: Convert Report.md to PDF
-         run: |
-              mkdir -p release-artifacts
-                pandoc Report.md -o release-artifacts/Report.pdf
+      - name: Convert REPORTE.md to PDF
+        run: |
+          mkdir -p release-artifacts
+          pandoc REPORTE.md -o release-artifacts/REPORTE.pdf
+
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
           name: redacted-advisory-pdf
-          path: release-artifacts/Rport.pdf
+          path: release-artifacts/REPORTE.pdf
 
   release:
     needs: build
-      runs-on: ubuntu-latest
-
-
+    runs-on: ubuntu-latest
 
     steps:
       - name: Download build artifact
@@ -48,6 +47,6 @@ jobs:
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Redacted Advisory Release ${{ github.run_number }}
-          files: release-artifacts/REPORT.pdf
+          files: release-artifacts/REPORTE.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
