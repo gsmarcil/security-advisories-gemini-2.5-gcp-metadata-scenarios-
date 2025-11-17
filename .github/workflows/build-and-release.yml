@@ -1,52 +1,29 @@
-name: Build and Release Redacted Advisory
+name: Create Release
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc
-
-      - name: Install wkhtmltopdf
-        run: sudo apt-get install -y wkhtmltopdf
-
-      - name: Convert Report.md to PDF
-        run: |
-          mkdir -p release-artifacts
-          pandoc Report.md -o release-artifacts/report.pdf --pdf-engine=wkhtmltopdf
-
-      - name: Upload PDF artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: redacted-advisory-pdf
-          path: release-artifacts/report.pdf
-
   release:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: redacted-advisory-pdf
-          path: release-artifacts
+          name: report-pdf
+          path: ./dist
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: Redacted Advisory Release ${{ github.run_number }}
-          files: release-artifacts/report.pdf
+          tag_name: v1.0.9
+          name: "Security Advisory Release"
+          files: ./dist/report.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
