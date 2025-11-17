@@ -1,0 +1,49 @@
+name: Auto Tag & Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  autotag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "LAST_TAG=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Calculate next tag
+        id: next_tag
+        run: |
+          TAG=${{ steps.get_tag.outputs.LAST_TAG }}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${TAG#v}"
+          PATCH=$((PATCH + 1))
+          NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
+
+      - name: Create new tag
+        run: |
+          git tag ${{ steps.next_tag.outputs.NEW_TAG }}
+          git push origin ${{ steps.next_tag.outputs.NEW_TAG }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.next_tag.outputs.NEW_TAG }}
+          name: "Release ${{ steps.next_tag.outputs.NEW_TAG }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
