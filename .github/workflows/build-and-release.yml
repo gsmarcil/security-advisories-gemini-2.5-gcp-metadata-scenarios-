@@ -23,7 +23,7 @@ jobs:
       - name: Convert Report.md to PDF
         run: |
           mkdir -p release-artifacts
-          pandoc Report.md -o release-artifacts/report.pdf
+          pandoc Report.md -o release-artifacts/report.pdf --pdf-engine=wkhtmltopdf
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
