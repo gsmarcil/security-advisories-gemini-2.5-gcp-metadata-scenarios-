@@ -2,12 +2,41 @@ name: Create Release
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Install wkhtmltopdf
+        run: sudo apt-get install -y wkhtmltopdf
+
+      - name: Convert Report.md to PDF
+        run: |
+          mkdir -p release-artifacts
+          pandoc Report.md -o release-artifacts/report.pdf --pdf-engine=wkhtmltopdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-pdf
+          path: release-artifacts/report.pdf
+
   release:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
