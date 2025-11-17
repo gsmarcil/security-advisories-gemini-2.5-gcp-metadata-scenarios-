@@ -1,4 +1,7 @@
-# Redacted Security Advisory
+---
+title: "Security Advisory"
+---
+ # Redacted Security Advisory 
 Title: Gemini 2.5 Flash — Realistic Google Cloud Metadata Exposure Scenarios (Redacted)
 
 Author: [REDACTED]
